@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic-Tac-Toe — Ultimate Tic-Tac-Toe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- BG Layers -->
+  <div class="bg-layer">
+    <canvas id="plasma-canvas"></canvas>
+    <div class="grid-overlay"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- Floating Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- ══════════ HEADER ══════════ -->
+  <header class="site-header">
+    <div class="header-bg"></div>
+    <div class="header-content">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 60 60" fill="none">
+            <path d="M10 10 L26 26 M26 10 L10 26" stroke="var(--x)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="44" cy="18" r="10" stroke="var(--o)" stroke-width="5" fill="none"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="logo-text">Tic-Tac-Toe<span class="logo-accent"></span></h1>
+          <p class="logo-sub">⬡ ULTIMATE BATTLE ⬡</p>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn" id="btn-sound" title="Sound">
+          <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        </button>
+        <button class="nav-btn" id="btn-theme" title="Theme">
+          <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="nav-btn" id="btn-stats" title="Stats">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <main class="arena">
+
+    <!-- ── CONFIG STRIP (REDESIGNED) ── -->
+    <section class="config-strip" id="config-strip">
+
+      <!-- Animated top accent bar -->
+      <div class="cs-accent-bar"></div>
+
+      <!-- Player names -->
+      <div class="config-players">
+        <div class="pname-wrap x-side">
+          <div class="pname-avatar x-avatar-sm">✕</div>
+          <div class="pname-field-wrap">
+            <label class="pname-label x-label">PLAYER ONE</label>
+            <input class="pname-input" id="name-x" placeholder="Enter name…" maxlength="12" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="config-vs-badge">
+          <div class="vs-ring"></div>
+          <span class="vs-inner">VS</span>
+        </div>
+
+        <div class="pname-wrap o-side">
+          <div class="pname-field-wrap" style="align-items:flex-end">
+            <label class="pname-label o-label">PLAYER TWO</label>
+            <input class="pname-input" id="name-o" placeholder="Enter name…" maxlength="12" autocomplete="off" style="text-align:right" />
+          </div>
+          <div class="pname-avatar o-avatar-sm">○</div>
+        </div>
+      </div>
+
+      <!-- Config rows -->
+      <div class="config-rows">
+
+        <div class="config-row">
+          <div class="cfg-label-wrap">
+            <svg class="cfg-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8z"/>
+              <path d="M8 5v3l2 2"/>
+            </svg>
+            <label class="cfg-label">MODE</label>
+          </div>
+          <div class="chip-group" id="mode-chips">
+            <button class="chip active" data-mode="pvp"><span class="chip-icon">⚔</span><span>PvP</span></button>
+            <button class="chip" data-mode="easy"><span class="chip-icon-ai">AI</span><span>Easy</span></button>
+            <button class="chip" data-mode="medium"><span class="chip-icon-ai">AI</span><span>Medium</span></button>
+            <button class="chip" data-mode="hard"><span class="chip-icon-ai">AI</span><span>Hard</span></button>
+          </div>
+        </div>
+
+        <div class="config-row">
+          <div class="cfg-label-wrap">
+            <svg class="cfg-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="4" height="4" rx="1"/>
+              <rect x="10" y="2" width="4" height="4" rx="1"/>
+              <rect x="2" y="10" width="4" height="4" rx="1"/>
+              <rect x="10" y="10" width="4" height="4" rx="1"/>
+            </svg>
+            <label class="cfg-label">GRID</label>
+          </div>
+          <div class="chip-group" id="grid-chips">
+            <button class="chip active" data-size="3">3×3</button>
+            <button class="chip" data-size="4">4×4</button>
+            <button class="chip" data-size="5">5×5</button>
+          </div>
+        </div>
+
+        <div class="config-row">
+          <div class="cfg-label-wrap">
+            <svg class="cfg-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="9" r="5.5"/>
+              <path d="M8 6v3l1.5 1.5"/>
+              <path d="M6 2h4"/>
+            </svg>
+            <label class="cfg-label">TIMER</label>
+          </div>
+          <div class="chip-group" id="timer-chips">
+            <button class="chip active" data-timer="0">∞ Off</button>
+            <button class="chip" data-timer="10">10s</button>
+            <button class="chip" data-timer="20">20s</button>
+            <button class="chip" data-timer="30">30s</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SCOREBOARD ── -->
+    <section class="scoreboard">
+      <!-- Player X -->
+      <div class="player-panel x-panel" id="panel-x">
+        <div class="panel-glow x-glow-el"></div>
+        <div class="panel-inner">
+          <div class="panel-avatar x-avatar-big">✕</div>
+          <div class="panel-info">
+            <div class="panel-name" id="disp-x">Player 1</div>
+            <div class="panel-tag x-tag">PLAYER ONE</div>
+          </div>
+          <div class="panel-score-wrap">
+            <div class="panel-score" id="score-x">0</div>
+            <div class="panel-wins-label">WINS</div>
+          </div>
+        </div>
+        <div class="panel-streak" id="streak-x"></div>
+        <div class="panel-active-bar x-bar"></div>
+      </div>
+
+      <!-- Center -->
+      <div class="score-center">
+        <div class="vs-text">VS</div>
+        <div class="draws-block">
+          <div class="draws-num" id="draws">0</div>
+          <div class="draws-lbl">DRAWS</div>
+        </div>
+        <div class="round-num" id="round-disp">RD —</div>
+      </div>
+
+      <!-- Player O -->
+      <div class="player-panel o-panel" id="panel-o">
+        <div class="panel-glow o-glow-el"></div>
+        <div class="panel-inner">
+          <div class="panel-score-wrap">
+            <div class="panel-score" id="score-o">0</div>
+            <div class="panel-wins-label">WINS</div>
+          </div>
+          <div class="panel-info" style="text-align:right">
+            <div class="panel-name" id="disp-o">Player 2</div>
+            <div class="panel-tag o-tag">PLAYER TWO</div>
+          </div>
+          <div class="panel-avatar o-avatar-big">○</div>
+        </div>
+        <div class="panel-streak" id="streak-o" style="justify-content:flex-end"></div>
+        <div class="panel-active-bar o-bar"></div>
+      </div>
+    </section>
+
+    <!-- ── STATUS BAR ── -->
+    <div class="status-bar" id="status-bar">
+      <div class="status-line">
+        <div class="status-indicator" id="status-indicator"></div>
+        <div class="status-text" id="status-text">Choose your opening move</div>
+        <div class="turn-timer-ring" id="timer-ring" style="display:none">
+          <svg viewBox="0 0 50 50">
+            <circle class="tr-track" cx="25" cy="25" r="20"/>
+            <circle class="tr-fill" id="tr-fill" cx="25" cy="25" r="20"/>
+          </svg>
+          <span class="tr-num" id="tr-num">30</span>
+        </div>
+      </div>
+      <div class="ai-pill" id="ai-pill">
+        <span class="ai-dot"></span>
+        <span class="ai-dot"></span>
+        <span class="ai-dot"></span>
+        <span class="ai-text">AI COMPUTING</span>
+      </div>
+    </div>
+
+    <!-- ── GAME BOARD ── -->
+    <div class="board-stage" id="board-stage">
+      <div class="board-frame">
+        <div class="frame-corner fc-tl"></div>
+        <div class="frame-corner fc-tr"></div>
+        <div class="frame-corner fc-bl"></div>
+        <div class="frame-corner fc-br"></div>
+        <div class="board-grid" id="board"></div>
+      </div>
+    </div>
+
+    <!-- ── CONTROLS ── -->
+    <div class="control-bar">
+      <button class="ctrl-btn undo-btn" id="undo-btn" onclick="undoMove()">
+        <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+        <span>UNDO</span>
+      </button>
+      <button class="ctrl-btn primary-btn" onclick="resetGame()">
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        <span>NEW ROUND</span>
+      </button>
+      <button class="ctrl-btn danger-btn" onclick="resetAll()">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        <span>RESET ALL</span>
+      </button>
+    </div>
+
+    <!-- ── MATCH LOG ── -->
+    <div class="match-log-section">
+      <div class="log-header">
+        <div class="log-title">
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          MATCH LOG
+        </div>
+        <button class="log-clear" onclick="clearLog()">CLEAR</button>
+      </div>
+      <div class="log-list" id="log-list">
+        <div class="log-empty">No matches played yet. Make your first move!</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ══════════ WIN MODAL ══════════ -->
+  <div class="modal-backdrop" id="modal" style="display:none" onclick="handleBackdropClick(event)">
+    <div class="modal-box" id="modal-box">
+      <div class="modal-fx" id="modal-fx"></div>
+      <div class="modal-trophy" id="modal-trophy">🏆</div>
+      <div class="modal-winner" id="modal-winner">Player 1 Wins!</div>
+      <div class="modal-sub" id="modal-sub">Outstanding play!</div>
+      <div class="modal-score-snap" id="modal-snap"></div>
+      <div class="modal-actions">
+        <button class="ctrl-btn primary-btn" onclick="resetGame();closeModal()">PLAY AGAIN</button>
+        <button class="ctrl-btn" onclick="closeModal()">VIEW BOARD</button>
+      </div>
+      <div class="modal-hint">Press ESC or click outside to close</div>
+    </div>
+  </div>
+
+  <!-- ══════════ STATS DRAWER ══════════ -->
+  <div class="drawer-backdrop" id="drawer-bg" onclick="closeStats()"></div>
+  <aside class="stats-drawer" id="stats-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">STATISTICS</div>
+      <button class="drawer-close" onclick="closeStats()">✕</button>
+    </div>
+    <div class="drawer-body" id="drawer-body">
+      <div class="stat-card">
+        <div class="stat-label">Total Rounds</div>
+        <div class="stat-value" id="stat-rounds">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">X Win Rate</div>
+        <div class="stat-value x-stat" id="stat-xrate">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">O Win Rate</div>
+        <div class="stat-value o-stat" id="stat-orate">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Draw Rate</div>
+        <div class="stat-value" id="stat-drate">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">X Best Streak</div>
+        <div class="stat-value x-stat" id="stat-xstreak">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">O Best Streak</div>
+        <div class="stat-value o-stat" id="stat-ostreak">0</div>
+      </div>
+    </div>
+  </aside>
+
+  <script src="main.js"></script>
+</body>
+</html>
